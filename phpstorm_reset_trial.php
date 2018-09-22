@@ -1,17 +1,39 @@
 <?php
 
 echo "PhpStorm Reset Trial\n====================\n\n";
-
 echo "This utility will reset trail period of your PhpStorm installation with saving its settings.\n\n";
 
-if (!confirm('Want to continue?')) {
+if ($_SERVER['argc'] < 2) {
+    echo "Usage:\n\tphp ", basename(__FILE__), " <PhpStorm-Installation-Dir>\n\n";
+    exit(-1);
+}
+
+$phpStormDir = $_SERVER['argv'][1];
+
+if (!checkIsValidPhpStormDir($phpStormDir)) {
+    echo "Invalid PhpStorm installation directory passed (\"{$phpStormDir}\")";
+    exit(-1);
+}
+
+echo "Determining location of PhpStorm config directory ... ";
+try {
+    $settingsConfigDir = getIdeaConfigDir($phpStormDir);
+} catch (\Exception $e) {
+    echo "FAILED\n";
+    printException($e);
+    exit(-1);
+}
+echo "OK\n";
+
+echo "Config directory found in \"{$settingsConfigDir}\"\n\n";
+
+if (!confirm("Want to continue?")) {
     echo "Aborting...\n";
     return;
 }
 
-$settingsDir = 'C:/ProgramData/JetBrains/PhpStorm.test';
+$settingsDir = dirname($settingsConfigDir);
 $backupDir = $settingsDir . '/backup';
-$settingsConfigDir = $settingsDir . '/config';
 $backupConfigDir = $backupDir . '/config';
 
 //
@@ -79,7 +101,6 @@ if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
         echo "Failed to remove registry folder - aborting...";
         exit(-1);
     }
-
 }
 
 do {
@@ -282,10 +303,6 @@ function isEmptyDir(string $path): bool
 
 function mergeOptionsXml(string $oldOptionsFile, string $newOptionsFile)
 {
-//    if (file_exists($newOptionsFile . '.bak')) {
-//        die('It seems you already executed this script earlier');
-//    }
-
     $newOptionsFileTmp = $newOptionsFile . '.tmp';
 
     $fOld = fopen($oldOptionsFile, 'r');
@@ -330,4 +347,33 @@ function mergeOptionsXml(string $oldOptionsFile, string $newOptionsFile)
 
     rename($newOptionsFile, $newOptionsFile . '.bak');
     rename($newOptionsFileTmp, $newOptionsFile);
+}
+
+function checkIsValidPhpStormDir(string $phpStormDir): bool
+{
+    return file_exists($phpStormDir . '/bin/idea.properties');
+}
+
+/**
+ * @param string $phpStormDir
+ * @return string
+ * @throws \Exception
+ */
+function getIdeaConfigDir(string $phpStormDir): string
+{
+    $propertiesPathFile = $phpStormDir . '/bin/idea.properties';
+    $configPathOptionName = 'idea.config.path';
+    $f = new \SplFileObject($propertiesPathFile);
+    while (($s = $f->fgets()) !== false) {
+        $s = rtrim($s);
+        if ($s === '' || $s{0} === '#') {
+            continue;
+        }
+//        echo $s, "\n";
+        list($key, $value) = array_map('trim', explode('=', $s));
+        if ($key === 'idea.config.path') {
+            return $value;
+        }
+    }
+    throw new \Exception("Failed to get \"{$configPathOptionName}\" from \"{$propertiesPathFile}\"");
 }
