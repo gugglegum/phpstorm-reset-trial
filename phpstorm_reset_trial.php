@@ -11,7 +11,7 @@ if ($_SERVER['argc'] < 2) {
 $phpStormDir = $_SERVER['argv'][1];
 
 if (!checkIsValidPhpStormDir($phpStormDir)) {
-    echo "Invalid PhpStorm installation directory passed (\"{$phpStormDir}\")";
+    echo "Invalid PhpStorm installation directory passed (\"{$phpStormDir}\")\n";
     exit(-1);
 }
 
@@ -89,26 +89,31 @@ echo "OK\n";
 //
 
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-    $registryFolder = "HKEY_CURRENT_USER\SOFTWARE\JavaSoft\Prefs\jetbrains\phpstorm";
+    $registryFolder = 'HKEY_CURRENT_USER\SOFTWARE\JavaSoft\Prefs\jetbrains\phpstorm';
 
     if (!confirm("We are going to remove registry folder \"{$registryFolder}\". Continue?")) {
         echo "Aborting...\n";
         return;
     }
 
-    passthru("reg delete " . escapeshellarg($registryFolder), $retCode);
+    passthru('reg delete ' . escapeshellarg($registryFolder) . ' /f', $retCode);
     if ($retCode !== 0) {
-        echo "Failed to remove registry folder - aborting...";
+        echo "Failed to remove registry folder - aborting...\n";
         exit(-1);
     }
 }
 
+echo "Now start PhpStorm and do the following things:\n",
+    " - Select (*) Do not import anything -> Press [OK]\n",
+    " - Press [Skip Remaining and Set Defaults]\n",
+    " - Select (*) Evaluate for free -> Press [Evaluate]\n",
+    " - Exit PhpStorm\n\n";
 do {
-    if (confirm('Now start PhpStorm, select evaluation end exit. Did it?')) {
-        if (is_dir($settingsConfigDir)) {
+    if (confirm('Did it?')) {
+        if (file_exists($settingsConfigDir . '/options/options.xml')) {
             break;
         } else {
-            echo "No, it seems you didn't.\n";
+            echo "No, you didn't.\n";
         }
     }
 } while (true);
@@ -135,7 +140,8 @@ echo 'Copying all other config files back from backup ... ';
 try {
     copyDir($backupConfigDir, $settingsDir, false, function(\SplFileInfo $entry) use ($backupConfigDir) {
         return $entry->getRealPath() !== realpath($backupConfigDir . '/options/options.xml')
-            && strtolower($entry->getExtension()) !== 'bak';
+            && strtolower($entry->getExtension()) !== 'bak'
+            && realpath($entry->getPath()) !== realpath($backupConfigDir . '/eval');
     });
 } catch (\RuntimeException $e) {
     echo "FAILED\n";
