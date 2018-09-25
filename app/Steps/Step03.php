@@ -82,7 +82,7 @@ class Step03 extends StepAbstract
     public function backward(): void
     {
         if (is_dir($this->stepConfig->getSettingsConfigDir())) {
-            if (!Console::confirm('Delete new just created config directory? (old one will be restored from backup then)', true)) {
+            if (!Console::confirm('Remove new just created config directory? (old one will be restored from backup then)', true)) {
                 throw new UserAbortException();
             }
             echo "Removing new config directory ... ";
@@ -96,6 +96,12 @@ class Step03 extends StepAbstract
         }
     }
 
+    /**
+     * Merges new config/options/options.xml file with old one in backup
+     *
+     * @param string $oldOptionsFile
+     * @param string $newOptionsFile
+     */
     private static function mergeOptionsXml(string $oldOptionsFile, string $newOptionsFile)
     {
         $newOptionsFileTmp = $newOptionsFile . '.tmp';
