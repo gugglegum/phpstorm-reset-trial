@@ -8,6 +8,9 @@ use App\Utils\Console;
 
 class PhpstormResetTrial
 {
+    const VERSION = '1.0.0';
+    const DATE = '2018-09-26';
+
     /**
      * @var string
      */
@@ -21,7 +24,7 @@ class PhpstormResetTrial
 
     public function run()
     {
-        echo "PhpStorm Reset Trial\n====================\n\n";
+        echo "PhpStorm Reset Trial ver. " . self::VERSION . ' ' . self::DATE . "\n\n";
         echo "This utility will reset trail period of your PhpStorm installation with saving its settings.\n\n";
 
         $this->parseCommandLineArguments();

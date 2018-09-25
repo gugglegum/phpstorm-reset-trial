@@ -17,7 +17,6 @@ Actually, when merging configs we need to copy all files except `eval/*` and `op
 
 Run this utility as follow:
 
-
 ```
 php phpstorm_reset_trial.phar ~\.PhpStorm2018.2\config
 ```
@@ -29,8 +28,7 @@ This utility will guide you along the path and will do the main job for you. Whe
 
 ```
 $ php bin/phpstorm_reset_trial ~/.PhpStorm2018.2/config/
-PhpStorm Reset Trial
-====================
+PhpStorm Reset Trial ver. 1.0.0 2018-09-26
 
 This utility will reset trail period of your PhpStorm installation with saving its settings.
 
@@ -56,9 +54,19 @@ Copying all other config files back from backup ... OK
 All is done. Now you can start PhpStorm and continue to use it yet another 30 days! :)
 ```
 
+## Preparing to work
+
+Install [Composer](https://getcomposer.org/) and make:
+
+```
+composer install
+```
+
+This utility actually doesn't uses any third-party packages, it uses Composer just for class autoloader.
+
 ## Building PHAR executable
 
-You need to install [box-project](https://github.com/box-project/box2) locally by this command executed in project root:
+Install [box-project](https://github.com/box-project/box2) locally by this command executed in the project root:
 
 ```
 curl -LSs https://box-project.github.io/box2/installer.php | php
@@ -68,7 +76,6 @@ Open your php.ini and make
 ```
 phar.readonly = Off
 ```
-(it's On by default)
 
 Now you can build a PHAR executable:
 
