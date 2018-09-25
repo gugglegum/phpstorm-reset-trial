@@ -1,0 +1,8 @@
+{
+  "chmod": "0755",
+  "directories": ["app", "vendor"],
+  "files": ["README.md"],
+  "main": "bin/phpstorm_reset_trial",
+  "output": "phpstorm_reset_trial.phar",
+  "stub": true
+}
