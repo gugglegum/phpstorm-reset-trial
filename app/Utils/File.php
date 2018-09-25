@@ -49,11 +49,12 @@ final class File
         if (!is_dir($sourceDir)) {
             throw new \RuntimeException("Source \"{$sourceDir}\" must be existing directory");
         }
-        if (!is_dir($destinationDir)) {
-            throw new \RuntimeException("Destination \"{$destinationDir}\" must be existing directory");
-        }
 
-        if (!$contentsOnly) {
+        if ($contentsOnly) {
+            if (!is_dir($destinationDir) && !@mkdir($destinationDir, 0755)) {
+                throw new \RuntimeException("Failed to create directory \"{$destinationDir}\"");
+            }
+        } else {
             $destination = $destinationDir . DIRECTORY_SEPARATOR . basename($sourceDir);
             if (!is_dir($destination) && !@mkdir($destination, 0755)) {
                 throw new \RuntimeException("Failed to create directory \"{$destination}\"");
