@@ -10,6 +10,10 @@
  *
  */
 
+if (PHP_SAPI !== 'cli') {
+    echo 'Warning: this command must be invoked via the CLI version of PHP, not the ' . PHP_SAPI . ' SAPI' . "\n";
+}
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 \App\PhpstormResetTrial::main();
