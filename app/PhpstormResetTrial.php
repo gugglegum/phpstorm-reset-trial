@@ -11,7 +11,7 @@ class PhpstormResetTrial
     /**
      * @var string
      */
-    private $phpStormDir;
+    private $configDir;
 
     public static function main()
     {
@@ -28,15 +28,14 @@ class PhpstormResetTrial
 
         $stepsStack = [];
         try {
-            $this->checkIsValidPhpStormDir();
-            $settingsConfigDir = $this->getIdeaConfigDir();
+            $this->checkIsValidConfigDir();
 
-            echo "Config directory should be in \"{$settingsConfigDir}\"\n";
+            echo "Config directory in \"{$this->configDir}\"\n";
 
-            $settingsDir = dirname($settingsConfigDir);
+            $settingsDir = dirname($this->configDir);
             $backupDir = $settingsDir . '/backup';
 
-            echo "Backup directory will be in \"{$backupDir}\"\n\n";
+            echo "Backup directory in \"{$backupDir}\"\n\n";
 
             if (!Console::confirm("Want to continue?")) {
                 throw new UserAbortException();
@@ -44,7 +43,7 @@ class PhpstormResetTrial
 
             $stepConfig = new Steps\StepConfig([
                 'settingsDir' => $settingsDir,
-                'settingsConfigDir' => $settingsConfigDir,
+                'settingsConfigDir' => $this->configDir,
                 'backupDir' => $backupDir,
                 'backupConfigDir' => $backupDir . '/config',
             ]);
@@ -59,7 +58,8 @@ class PhpstormResetTrial
         } catch (\Exception $e) {
             self::printException($e);
             if (self::needStepsBackward($stepsStack)) {
-                if (Console::confirm('We have made some changes that we may try to revert. Revert changes?')) {
+                echo "...............\nWe are exiting now, but we have made some changes that we may try to revert. ";
+                if (Console::confirm('Revert changes?')) {
                     try {
                         while ($step = array_pop($stepsStack)) {
                             $step->backward();
@@ -75,46 +75,24 @@ class PhpstormResetTrial
         echo "\nAll is done. Now you can start PhpStorm and continue to use it yet another 30 days! :)\n";
     }
 
+    /**
+     * @throws \Exception
+     */
+    private function checkIsValidConfigDir()
+    {
+        if (!file_exists($this->configDir . '/options/options.xml')) {
+            throw new \Exception("Directory {$this->configDir} is not looks like valid PhpStorm config directory\n");
+        }
+    }
+
     private function parseCommandLineArguments()
     {
         if ($_SERVER['argc'] < 2) {
-            echo "Usage:\n\tphp ", basename(__FILE__), " <PhpStorm-Installation-Dir>\n\n";
+            echo "Usage:\n\tphp ", basename(__FILE__), " <PhpStorm-Config-Dir>\n\n";
             exit(-1);
         }
 
-        $this->phpStormDir = $_SERVER['argv'][1];
-    }
-
-    /**
-     * @throws \Exception
-     */
-    private function checkIsValidPhpStormDir()
-    {
-        if (!file_exists($this->phpStormDir . '/bin/idea.properties')) {
-            throw new \Exception("Invalid PhpStorm installation directory passed (\"{$this->phpStormDir}\")\n");
-        }
-    }
-
-    /**
-     * @return string
-     * @throws \Exception
-     */
-    private function getIdeaConfigDir(): string
-    {
-        $propertiesPathFile = $this->phpStormDir . '/bin/idea.properties';
-        $configPathOptionName = 'idea.config.path';
-        $f = new \SplFileObject($propertiesPathFile);
-        while (($s = $f->fgets()) !== false) {
-            $s = rtrim($s);
-            if ($s === '' || $s{0} === '#') {
-                continue;
-            }
-            list($key, $value) = array_map('trim', explode('=', $s));
-            if ($key === 'idea.config.path') {
-                return $value;
-            }
-        }
-        throw new \Exception("Failed to get \"{$configPathOptionName}\" from \"{$propertiesPathFile}\"");
+        $this->configDir = rtrim($_SERVER['argv'][1], '/\\');
     }
 
     /**
