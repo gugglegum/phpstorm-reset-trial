@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 
 /*
@@ -53,7 +54,6 @@
  * revert all changes made. And if you'll agree, it will revert step-by-step with confirmations.
  */
 
-require_once 'vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 \App\PhpstormResetTrial::main();
-
