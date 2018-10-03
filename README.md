@@ -19,6 +19,8 @@ Actually, when merging configs we need to copy all files except `eval/*` and `op
 
 This utility automates this process and doing all these things for you.
 
+**Mac OS users note:** This utility was not tested yet on Mac. If the evaluation period is not resetting correctly, try to remove also this folder `~/Library/Preferences/com.jetbrains.PhpStorm.plist` before running PhpStorm to start new evaluation period. Please contact me via e-mail and tell me if removal of this folder was helped and what was inside this folder? 
+
 ## Running as PHAR archive
 
 This is the easiest and the fastest way to reset trial period. You only need to download `phpstorm_reset_trial.phar` from [Releases](https://github.com/gugglegum/phpstorm-reset-trial/releases) section on GitHub project page into any folder and run it as follow:
