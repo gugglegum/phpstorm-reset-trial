@@ -25,7 +25,7 @@ class PhpstormResetTrial
     public function run()
     {
         echo "PhpStorm Reset Trial ver. " . self::VERSION . ' ' . self::DATE . "\n\n";
-        echo "This utility will reset trail period of your PhpStorm installation with saving its settings.\n\n";
+        echo "This utility will reset trial period of your PhpStorm installation with saving its settings.\n\n";
 
         $this->parseCommandLineArguments();
 

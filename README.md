@@ -41,7 +41,7 @@ This utility will guide you along the path and will do the main job for you. Whe
 $ php bin/phpstorm_reset_trial ~/.PhpStorm2018.2/config/
 PhpStorm Reset Trial ver. 1.0.0 2018-09-26
 
-This utility will reset trail period of your PhpStorm installation with saving its settings.
+This utility will reset trial period of your PhpStorm installation with saving its settings.
 
 Config directory in "/home/paul/.PhpStorm2018.2/config"
 Backup directory in "/home/paul/.PhpStorm2018.2/backup"

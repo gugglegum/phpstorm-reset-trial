@@ -6,7 +6,7 @@
  *
  * Just run this script as follow (correct path to PhpStorm installation dir if needed):
  *
- *      php bin/phpstorm_reset_trail "C:\Program Files\JetBrains\PhpStorm 2018"
+ *      php bin/phpstorm_reset_trial "C:\Program Files\JetBrains\PhpStorm 2018"
  *
  */
 
