@@ -13,10 +13,9 @@ class Step03 extends StepAbstract
     /**
      * Performs actions of the step
      *
-     * @return void
      * @throws UserAbortException
      */
-    public function forward(): void
+    public function forward()
     {
         if (is_dir($this->stepConfig->getBackupConfigDir())) {
             echo "Now start PhpStorm and do the following things:\n",
@@ -76,10 +75,9 @@ class Step03 extends StepAbstract
     /**
      * Reverts actions of the step previously performed by forward() method
      *
-     * @return void
      * @throws UserAbortException
      */
-    public function backward(): void
+    public function backward()
     {
         if (is_dir($this->stepConfig->getSettingsConfigDir())) {
             if (!Console::confirm('Remove new just created config directory? (old one will be restored from backup then)', true)) {

@@ -24,11 +24,10 @@ class Step02 extends StepAbstract
     /**
      * Performs actions of the step
      *
-     * @return void
      * @throws UserAbortException
      * @throws \Exception
      */
-    public function forward(): void
+    public function forward()
     {
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             if (!Console::confirm("Remove Registry key \"" . self::REGISTRY_KEY . "\". Continue?")) {
@@ -77,10 +76,9 @@ class Step02 extends StepAbstract
     /**
      * Reverts actions of the step previously performed by forward() method
      *
-     * @return void
      * @throws \Exception
      */
-    public function backward(): void
+    public function backward()
     {
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             if ($this->isRegistryKeyDeleted) {

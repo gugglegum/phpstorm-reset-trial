@@ -18,11 +18,10 @@ class Step01 extends StepAbstract
     /**
      * Performs actions of the step
      *
-     * @return void
      * @throws UserAbortException
      * @throws \Exception
      */
-    public function forward(): void
+    public function forward()
     {
         if (is_dir($this->stepConfig->getSettingsConfigDir())) {
             if (file_exists($this->stepConfig->getBackupDir())) {
@@ -81,10 +80,9 @@ class Step01 extends StepAbstract
     /**
      * Reverts actions of the step previously performed by forward() method
      *
-     * @return void
      * @throws UserAbortException
      */
-    public function backward(): void
+    public function backward()
     {
         if ($this->isConfigMoved) {
             if (!Console::confirm('Restore config directory from backup?', true)) {

@@ -8,15 +8,13 @@ interface StepInterface
 {
     /**
      * Performs actions of the step
-     *
-     * @return void
      */
-    public function forward(): void;
+    public function forward();
 
     /**
      * Reverts actions of the step previously performed by forward() method
      */
-    public function backward(): void;
+    public function backward();
 
     /**
      * Checks whether revert by backward() method is needed
