@@ -4,6 +4,10 @@
 
 This repo contains the utility which allow you to reset trial (evaluation) period in your PhpStorm installation (even if it's already expired) in a very easy and convenient way without losing your individual PhpStorm preferences.
 
+## Watch video instruction
+
+[![Watch the video](https://img.youtube.com/vi/rXUraU8szbg/hqdefault.jpg)](https://youtu.be/rXUraU8szbg)
+
 ## Resetting evaluation period
 
 The easiest way to reset evaluation period manually is to delete PhpStorm's config folder usually located at `{user.home}/.PhpStorm{version}/config`. Additionally you need to remove PhpStorm's Java user preferences:
