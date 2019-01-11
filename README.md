@@ -19,7 +19,7 @@ Now if you will start PhpStorm, it will think that it was just installed and sta
 
 Disadvantage of this method is losing all your preferences: your hot keys, appearance, editor settings, last projects, opened files, etc. This utility is backing up your config folder, cleans PhpStorm's Java user preferences containing evaluation period info. Then after you start PhpStorm and select new evaluation period it will merge new config with old one. So you'll be able to continue working from the place where you stopped.
 
-Actually, when merging configs we need to copy all files except `eval/*` and `options/options.xml` from backup to actual config directory. The `options/options.xml` file need to be merged more intellectually line by line with adding `<property>` XML nodes from backed up `options/options.xml` except `evlsprt*` properties.
+Actually, when merging configs we need to copy all files except `eval/*` and `other/other.xml` from backup to actual config directory. The `other/other.xml` file need to be merged more intellectually line by line with adding `<property>` XML nodes from backed up `other/other.xml` except `evlsprt*` properties.
 
 This utility automates this process and doing all these things for you.
 
@@ -63,7 +63,7 @@ Now start PhpStorm and do the following things:
  - Exit PhpStorm
 
 Did it? (y/n) [no] y
-Merging old options/options.xml with new one ... OK
+Merging old other/other.xml with new one ... OK
 Copying all other config files back from backup ... OK
 
 All is done. Now you can start PhpStorm and continue to use it yet another 30 days! :)

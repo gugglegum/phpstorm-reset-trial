@@ -83,7 +83,7 @@ class PhpstormResetTrial
      */
     private function checkIsValidConfigDir()
     {
-        if (!file_exists($this->configDir . '/options/options.xml')) {
+        if (!file_exists($this->configDir . '/options/other.xml')) {
             throw new \Exception("Directory {$this->configDir} is not looks like valid PhpStorm config directory\n");
         }
     }
