@@ -49,6 +49,7 @@ class PhpstormResetTrial
                 'settingsConfigDir' => $this->configDir,
                 'backupDir' => $backupDir,
                 'backupConfigDir' => $backupDir . '/config',
+                'propertiesComponentFile' => file_exists($this->configDir . '/options/options.xml') ? 'options/options.xml' : 'options/other.xml',
             ]);
 
             for ($stepNumber = 1; $stepNumber <= 3; $stepNumber++) {
@@ -83,7 +84,7 @@ class PhpstormResetTrial
      */
     private function checkIsValidConfigDir()
     {
-        if (!file_exists($this->configDir . '/options/other.xml')) {
+        if (!file_exists($this->configDir . '/options/other.xml') && !file_exists($this->configDir . '/options/options.xml')) {
             throw new \Exception("Directory {$this->configDir} is not looks like valid PhpStorm config directory\n");
         }
     }

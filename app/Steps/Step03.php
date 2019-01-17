@@ -25,7 +25,7 @@ class Step03 extends StepAbstract
             " - Exit PhpStorm\n\n";
             do {
                 if (Console::confirm('Did it?')) {
-                    if (file_exists($this->stepConfig->getSettingsConfigDir() . '/options/other.xml')) {
+                    if (file_exists($this->stepConfig->getSettingsConfigDir() . DIRECTORY_SEPARATOR . $this->stepConfig->getPropertiesComponentFile())) {
                         break;
                     } else {
                         echo "No, you didn't.\n";
@@ -41,9 +41,12 @@ class Step03 extends StepAbstract
             // Merging old options/other.xml with new one
             //
 
-            echo 'Merging old options/other.xml with new one ... ';
+            echo "Merging old {$this->stepConfig->getPropertiesComponentFile()} with new one ... ";
             try {
-                self::mergeOptionsXml($this->stepConfig->getBackupConfigDir() . '/options/other.xml', $this->stepConfig->getSettingsConfigDir() . '/options/other.xml');
+                self::mergeOptionsXml(
+                    $this->stepConfig->getBackupConfigDir() . DIRECTORY_SEPARATOR . $this->stepConfig->getPropertiesComponentFile(),
+                    $this->stepConfig->getSettingsConfigDir() . DIRECTORY_SEPARATOR . $this->stepConfig->getPropertiesComponentFile()
+                );
                 echo "OK\n";
             } catch (\RuntimeException $e) {
                 echo "FAILED\n";
@@ -57,7 +60,7 @@ class Step03 extends StepAbstract
             echo 'Copying all other config files back from backup ... ';
             try {
                 File::copyDir($this->stepConfig->getBackupConfigDir(), $this->stepConfig->getSettingsDir(), false, function(\SplFileInfo $entry) {
-                    return $entry->getRealPath() !== realpath($this->stepConfig->getBackupConfigDir() . '/options/other.xml')
+                    return $entry->getRealPath() !== realpath($this->stepConfig->getBackupConfigDir() . DIRECTORY_SEPARATOR . $this->stepConfig->getPropertiesComponentFile())
                         && strtolower($entry->getExtension()) !== 'bak'
                         && realpath($entry->getPath()) !== realpath($this->stepConfig->getBackupConfigDir() . '/eval');
                 });

@@ -28,6 +28,14 @@ class StepConfig
     private $backupConfigDir;
 
     /**
+     * A relative path and file name where PhpStorm stores XML tree of <component name="PropertiesComponent">. Before
+     * PhpStorm 2018.3.3 it was in options/options.xml, since 2018.3.3 it is in options/other.xml
+     *
+     * @var string
+     */
+    private $propertiesComponentFile;
+
+    /**
      * StepsConfig constructor
      *
      * @param array $data
@@ -81,5 +89,10 @@ class StepConfig
     public function getBackupConfigDir(): string
     {
         return $this->backupConfigDir;
+    }
+
+    public function getPropertiesComponentFile(): string
+    {
+        return $this->propertiesComponentFile;
     }
 }
