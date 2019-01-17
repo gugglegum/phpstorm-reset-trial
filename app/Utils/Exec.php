@@ -25,7 +25,7 @@ final class Exec
 
             $retCode = proc_close($process);
             if ($retCode !== 0) {
-                throw new \Exception("External command ({$command}) returned bad result code ({$retCode}");
+                throw new \Exception("External command ({$command}) returned bad result code ({$retCode})");
             }
         } else {
             throw new \Exception("Failed to execute command: {$command}");
