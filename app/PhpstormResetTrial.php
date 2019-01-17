@@ -8,8 +8,8 @@ use App\Utils\Console;
 
 class PhpstormResetTrial
 {
-    const VERSION = '1.0.1';
-    const DATE = '2018-10-19';
+    const VERSION = '1.1.0';
+    const DATE = '2019-01-17';
 
     /**
      * @var string
