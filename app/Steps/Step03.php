@@ -25,7 +25,7 @@ class Step03 extends StepAbstract
             " - Exit PhpStorm\n\n";
             do {
                 if (Console::confirm('Did it?')) {
-                    if (file_exists($this->stepConfig->getSettingsConfigDir() . '/options/options.xml')) {
+                    if (file_exists($this->stepConfig->getSettingsConfigDir() . '/options/other.xml')) {
                         break;
                     } else {
                         echo "No, you didn't.\n";
@@ -38,12 +38,12 @@ class Step03 extends StepAbstract
             } while (true);
 
             //
-            // Merging old options/options.xml with new one
+            // Merging old options/other.xml with new one
             //
 
-            echo 'Merging old options/options.xml with new one ... ';
+            echo 'Merging old options/other.xml with new one ... ';
             try {
-                self::mergeOptionsXml($this->stepConfig->getBackupConfigDir() . '/options/options.xml', $this->stepConfig->getSettingsConfigDir() . '/options/options.xml');
+                self::mergeOptionsXml($this->stepConfig->getBackupConfigDir() . '/options/other.xml', $this->stepConfig->getSettingsConfigDir() . '/options/other.xml');
                 echo "OK\n";
             } catch (\RuntimeException $e) {
                 echo "FAILED\n";
@@ -57,7 +57,7 @@ class Step03 extends StepAbstract
             echo 'Copying all other config files back from backup ... ';
             try {
                 File::copyDir($this->stepConfig->getBackupConfigDir(), $this->stepConfig->getSettingsDir(), false, function(\SplFileInfo $entry) {
-                    return $entry->getRealPath() !== realpath($this->stepConfig->getBackupConfigDir() . '/options/options.xml')
+                    return $entry->getRealPath() !== realpath($this->stepConfig->getBackupConfigDir() . '/options/other.xml')
                         && strtolower($entry->getExtension()) !== 'bak'
                         && realpath($entry->getPath()) !== realpath($this->stepConfig->getBackupConfigDir() . '/eval');
                 });
@@ -95,7 +95,7 @@ class Step03 extends StepAbstract
     }
 
     /**
-     * Merges new config/options/options.xml file with old one in backup
+     * Merges new config/options/other.xml file with old one in backup
      *
      * @param string $oldOptionsFile
      * @param string $newOptionsFile
