@@ -19,6 +19,16 @@ class Step02 extends StepAbstract
      */
     private $isRegistryKeyDeleted = false;
 
+    /**
+     * Whether "reg export" command to backup currently existing registry key was successful?
+     *
+     * @var bool
+     */
+    private $isRegistryKeyExported = false;
+
+    /**
+     * @var bool
+     */
     private $isJavaUserPrefsDeleted = false;
 
     /**
@@ -33,14 +43,18 @@ class Step02 extends StepAbstract
             if (!Console::confirm("Remove Registry key \"" . self::REGISTRY_KEY . "\". Continue?")) {
                 throw new UserAbortException();
             }
-            Exec::exec('reg export ' . escapeshellarg(self::REGISTRY_KEY) . ' ' . escapeshellarg($this->stepConfig->getBackupDir() . '/phpstorm.reg'));
-            echo "Deleting Registry ket ... ";
+            try {
+                Exec::exec('reg export ' . escapeshellarg(self::REGISTRY_KEY) . ' ' . escapeshellarg($this->stepConfig->getBackupDir() . '/phpstorm.reg'));
+                $this->isRegistryKeyExported = true;
+            } catch (\Exception $e) {
+                /* do nothing */
+            }
+            echo "Deleting Registry key ... ";
             try {
                 Exec::exec('reg delete ' . escapeshellarg(self::REGISTRY_KEY) . ' /f');
                 echo "OK\n";
             } catch (\Exception $e) {
-                echo "FAILED\n";
-                throw $e;
+                echo "FAILED (probably already deleted)\n";
             }
             $this->isRegistryKeyDeleted = true;
         } else {
@@ -81,7 +95,7 @@ class Step02 extends StepAbstract
     public function backward()
     {
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            if ($this->isRegistryKeyDeleted) {
+            if ($this->isRegistryKeyDeleted && $this->isRegistryKeyExported) {
                 if (!Console::confirm('Restore removed Registry key "' . self::REGISTRY_KEY . '"?', true)) {
                     throw new UserAbortException();
                 }
